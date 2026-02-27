@@ -144,6 +144,35 @@ Stable Audio Open weights.
 
 For the demo, since we are using `mp3` version of musdb, it is also necessary to have `libsndfile` installed. You can install it with `conda install conda-forge::libsndfile`.
 
+### Local macOS setup (Apple Silicon, `pyenv`)
+
+For local Mac setup, use Python 3.10 and skip `bitsandbytes` (CUDA-focused package). This is suitable for local dev and inference.
+
+```zsh
+brew install pyenv pyenv-virtualenv libsndfile
+
+# if pyenv is already initialized in your shell, skip these 4 lines
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+pyenv install 3.10.14
+pyenv virtualenv 3.10.14 sa-controlnet
+pyenv local sa-controlnet
+
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install torch torchvision torchaudio
+
+cp requirements.txt requirements.mac.txt
+sed -i '' '/^bitsandbytes$/d' requirements.mac.txt
+python -m pip install -r requirements.mac.txt
+rm requirements.mac.txt
+
+cp .env.tmp .env
+huggingface-cli login
+```
+
 ## Dataset (MusDB18HQ)
 
 First download the sharded version of [MusDB18HQ](https://sigsep.github.io/datasets/musdb.html#musdb18-compressed-stems) from https://drive.google.com/drive/folders/1bwiJbRH_0BsxGFkH0No-Rg_RHkVR2gc7?usp=sharing

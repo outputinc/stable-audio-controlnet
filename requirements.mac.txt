@@ -1,0 +1,13 @@
+jupyter
+torch
+torchvision
+torchaudio
+stable_audio_tools==0.0.16
+einops
+datasets[audio]
+yt-dlp
+gradio
+hydra-core
+hydra-colorlog
+pytorch-lightning==2.1.0
+huggingface_hub[cli]
